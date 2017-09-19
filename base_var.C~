@@ -1,0 +1,63 @@
+
+#include "TTree.h"
+#include "TFile.h"
+#include "TRandom.h"
+#include "TTree.h"
+#include "TCanvas.h"
+#include "TStyle.h"
+#include "TMath.h"
+#include <iostream>
+#include "TH1.h"
+#include "TChain.h"
+
+using namespace std;
+
+void base_var(){
+
+  TChain* algochain = new TChain("_algo_tree");
+  algochain->Add("/a/data/riverside/afadeeva/OutSN/SNoutput_ana_dat_v8_un_un_up_31.root");
+
+
+    TH1D *base1 = new TH1D("base1","b1",16000,0,3000);
+    TH1D *var1 = new TH1D("var1","v1",100000,-.010,.010);
+    TH2D *avg_compvch = new TH2D("avg_compvch","Avg Comp v. Ch",16600,-1,8300,100,0,1.2);
+
+Double_t b1, b2, b3, v1, v2, v3;
+  //  Int_t _ch;
+  algochain->SetBranchAddress("_b1",&b1);
+  algochain->SetBranchAddress("_b2",&b2);
+  algochain->SetBranchAddress("_b3",&b3);
+  algochain->SetBranchAddress("_v1",&v1);
+  algochain->SetBranchAddress("_v2",&v2);
+  algochain->SetBranchAddress("_v3",&v3);
+      
+   Long64_t nentries = algochain->GetEntries();
+
+   Long64_t nb = 0, cb = 0 , cbytes = 0, nbytes = 0 ;
+
+      for (Long64_t i=0; i<nentries ; i++) {
+	      Long64_t entry = algochain->LoadTree(i);
+              if (entry <0 ) break;
+
+             nb = algochain->GetEntry(i); nbytes += nb;
+	     cout << b1 << endl;
+
+      base1->Fill(b1);
+      var1->Fill(v1);
+
+      }
+
+   TCanvas *cans = new TCanvas("cans","raw data through SN compression algo",400,800);
+   cans->Divide(1,2);
+
+   cans->cd(1);
+   base1->SetXTitle("baseline U plane");
+   base1->Draw();
+   //_compress_tree->Draw("_compression");
+
+   cans->cd(2);
+   var1->SetXTitle("variance U plane");
+   var1->Draw();
+
+}
+

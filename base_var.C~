@@ -1,4 +1,4 @@
-
+//This script plots the first baseline and variance values for the blocks of 3 that the waveform is divided into from an output file of the SNCompression Algo; with a few modifications (adding histograms), the algorithm can read out the second and third blocks' baselines and variances as well
 #include "TTree.h"
 #include "TFile.h"
 #include "TRandom.h"
@@ -15,7 +15,7 @@ using namespace std;
 void base_var(){
 
   TChain* algochain = new TChain("_algo_tree");
-  algochain->Add("/a/data/riverside/afadeeva/OutSN/SNoutput_ana_dat_v8_un_un_up_31.root");
+  algochain->Add("/a/data/riverside/afadeeva/OutSN/SNoutput_ana_dat_v8_un_un_up_31.root");//add file
 
 
     TH1D *base1 = new TH1D("base1","b1",16000,0,3000);
@@ -24,6 +24,7 @@ void base_var(){
 
 Double_t b1, b2, b3, v1, v2, v3;
   //  Int_t _ch;
+  //  adding variables from the tree:
   algochain->SetBranchAddress("_b1",&b1);
   algochain->SetBranchAddress("_b2",&b2);
   algochain->SetBranchAddress("_b3",&b3);
@@ -41,11 +42,12 @@ Double_t b1, b2, b3, v1, v2, v3;
 
              nb = algochain->GetEntry(i); nbytes += nb;
 	     cout << b1 << endl;
-
+	//filling histograms:
       base1->Fill(b1);
       var1->Fill(v1);
 
       }
+//Plotting histograms
 
    TCanvas *cans = new TCanvas("cans","raw data through SN compression algo",400,800);
    cans->Divide(1,2);

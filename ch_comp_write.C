@@ -16,7 +16,7 @@ void ch_comp_write(){
 
   TChain* chchain = new TChain("_compress_ch");
   //chchain->Add("/a/data/westside/afadeeva/CompOut/compWF_Apr1_bbb_5_first1000ev.root"); //read in file
-   chchain->Add("/a/data/westside/afadeeva/CompOut/compWF_Apr1_bbb_1.root");
+   chchain->Add("/a/data/westside/afadeeva/CompOut/compWF_Apr1_bbb_5.root");
   TH2D *hist = new TH2D("hist","Data Reduction vs. Channel",8257,0,8256,301,0,300);
   TH2D *hist2 = new TH2D("hist2","Percent of Events not achieving compression factor vs. Channel",8257,0,8256,301,0,100);
  
